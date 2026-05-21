@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>二日酔いデータベース</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=IBM+Plex+Mono:wght@400;600&family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -14,7 +13,6 @@
   --border: rgba(255,255,255,0.08);
   --accent: #ff6b35;
   --accent2: #ffd166;
-  --amber: #f4a261;
   --muted: #888899;
   --text: #f0f0f8;
   --text2: #aaaacc;
@@ -23,275 +21,103 @@
   --blue: #4cc9f0;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'Noto Sans JP', sans-serif;
-  font-size: 14px;
-  line-height: 1.6;
-  min-height: 100vh;
-}
-/* noise texture overlay */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.4;
-}
+body { background: var(--bg); color: var(--text); font-family: 'Noto Sans JP', sans-serif; font-size: 14px; line-height: 1.6; min-height: 100vh; }
 
-/* ── LAYOUT ── */
-.app { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 0 1.5rem 3rem; }
+.app { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem 3rem; }
 
-/* ── HEADER ── */
-.header {
-  padding: 2rem 0 1.5rem;
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  border-bottom: 0.5px solid var(--border);
-  margin-bottom: 1.5rem;
-}
-.header-left { display: flex; align-items: center; gap: 1rem; }
-.logo {
-  font-family: 'DotGothic16', monospace;
-  font-size: 22px;
-  color: var(--accent);
-  letter-spacing: 0.02em;
-}
+/* HEADER */
+.header { padding: 2rem 0 1.5rem; display: flex; align-items: flex-end; justify-content: space-between; border-bottom: 0.5px solid var(--border); margin-bottom: 1.5rem; }
+.logo { font-family: 'DotGothic16', monospace; font-size: 22px; color: var(--accent); }
 .logo span { color: var(--accent2); }
 .tagline { font-size: 11px; color: var(--muted); font-family: 'IBM Plex Mono', monospace; margin-top: 2px; }
-.live-badge {
-  display: flex; align-items: center; gap: 5px;
-  background: rgba(239,71,111,0.15);
-  border: 0.5px solid rgba(239,71,111,0.4);
-  border-radius: 99px;
-  padding: 4px 10px;
-  font-size: 11px;
-  color: var(--red);
-  font-family: 'IBM Plex Mono', monospace;
-}
-.live-dot {
-  width: 6px; height: 6px; border-radius: 50%;
-  background: var(--red);
-  animation: pulse 1.5s infinite;
-}
+.live-badge { display: flex; align-items: center; gap: 5px; background: rgba(239,71,111,0.15); border: 0.5px solid rgba(239,71,111,0.4); border-radius: 99px; padding: 4px 10px; font-size: 11px; color: var(--red); font-family: 'IBM Plex Mono', monospace; }
+.live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--red); animation: pulse 1.5s infinite; }
 @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
 
-/* ── STAT CARDS ── */
+/* STATS */
 .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 1.5rem; }
-.stat-card {
-  background: var(--surface);
-  border: 0.5px solid var(--border);
-  border-radius: 10px;
-  padding: 14px 16px;
-  position: relative;
-  overflow: hidden;
-}
-.stat-card::after {
-  content: '';
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  height: 2px;
-  background: var(--accent-color, var(--accent));
-  border-radius: 0 0 10px 10px;
-}
-.stat-card:nth-child(1) { --accent-color: var(--accent); }
-.stat-card:nth-child(2) { --accent-color: var(--accent2); }
-.stat-card:nth-child(3) { --accent-color: var(--green); }
-.stat-card:nth-child(4) { --accent-color: var(--blue); }
+.stat-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: 10px; padding: 14px 16px; position: relative; overflow: hidden; }
+.stat-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: var(--ac, var(--accent)); border-radius: 0 0 10px 10px; }
+.stat-card:nth-child(1) { --ac: var(--accent); }
+.stat-card:nth-child(2) { --ac: var(--accent2); }
+.stat-card:nth-child(3) { --ac: var(--green); }
+.stat-card:nth-child(4) { --ac: var(--blue); }
 .stat-label { font-size: 10px; color: var(--muted); font-family: 'IBM Plex Mono', monospace; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.08em; }
-.stat-val { font-size: 26px; font-weight: 900; color: var(--accent-color, var(--text)); line-height: 1; }
+.stat-val { font-size: 26px; font-weight: 900; color: var(--ac, var(--text)); line-height: 1; }
 .stat-sub { font-size: 10px; color: var(--muted); margin-top: 4px; }
 
-/* ── TABS ── */
+/* TABS */
 .tab-bar { display: flex; gap: 4px; margin-bottom: 1.5rem; background: var(--surface); border-radius: 10px; padding: 4px; border: 0.5px solid var(--border); }
-.tab-btn {
-  flex: 1;
-  background: transparent;
-  border: none;
-  color: var(--muted);
-  font-family: 'Noto Sans JP', sans-serif;
-  font-size: 12px;
-  padding: 8px 4px;
-  border-radius: 7px;
-  cursor: pointer;
-  transition: all 0.2s;
-  display: flex; align-items: center; justify-content: center; gap: 5px;
-}
+.tab-btn { flex: 1; background: transparent; border: none; color: var(--muted); font-family: 'Noto Sans JP', sans-serif; font-size: 13px; padding: 8px 4px; border-radius: 7px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 5px; }
 .tab-btn:hover { color: var(--text2); background: var(--surface2); }
 .tab-btn.active { background: var(--surface2); color: var(--text); border: 0.5px solid var(--border); }
 .tab-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+/* PANELS */
 .panel { display: none; }
-.panel.active { display: block; animation: fadein 0.3s; }
+.panel.active { display: block; animation: fadein 0.25s; }
 @keyframes fadein { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
 
-/* ── GRID LAYOUT ── */
-.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
-.card {
-  background: var(--surface);
-  border: 0.5px solid var(--border);
-  border-radius: 10px;
-  padding: 1rem 1.25rem;
-}
+/* CARD */
+.card { background: var(--surface); border: 0.5px solid var(--border); border-radius: 10px; padding: 1rem 1.25rem; margin-bottom: 12px; }
 .card-title { font-size: 11px; color: var(--muted); font-family: 'IBM Plex Mono', monospace; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 1rem; display: flex; align-items: center; gap: 6px; }
-.card-title span { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); display: inline-block; }
+.card-title-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); display: inline-block; }
 
-/* ── HEATMAP ── */
-.heatmap-wrap { overflow-x: auto; }
-.heatmap-table { border-collapse: collapse; width: 100%; min-width: 320px; }
-.heatmap-table th { font-size: 10px; color: var(--muted); font-weight: 400; font-family: 'IBM Plex Mono', monospace; padding: 2px 4px; text-align: center; }
-.heatmap-table td.hour-label { font-size: 10px; color: var(--muted); font-family: 'IBM Plex Mono', monospace; padding: 1px 6px 1px 0; text-align: right; white-space: nowrap; }
-.hcell { width: 28px; height: 20px; border-radius: 3px; cursor: pointer; position: relative; transition: transform 0.1s; }
-.hcell:hover { transform: scale(1.3); z-index: 5; }
-.hm-legend { display: flex; align-items: center; gap: 6px; margin-top: 8px; font-size: 10px; color: var(--muted); font-family: 'IBM Plex Mono', monospace; }
-.hm-legend-bar { display: flex; gap: 2px; }
-.hm-legend-swatch { width: 14px; height: 14px; border-radius: 2px; }
+/* HEATMAP */
+.heatmap-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.heatmap-table { border-collapse: collapse; width: 100%; table-layout: fixed; }
+.heatmap-table th { font-size: 11px; color: var(--muted); font-weight: 400; font-family: 'IBM Plex Mono', monospace; padding: 3px 2px; text-align: center; }
+.heatmap-table th:first-child { width: 36px; }
+.hm-hour { font-size: 10px; color: var(--muted); font-family: 'IBM Plex Mono', monospace; padding: 2px 8px 2px 0; text-align: right; white-space: nowrap; width: 36px; }
+.hcell { height: 22px; border-radius: 3px; cursor: pointer; transition: transform 0.1s; }
+.hcell:hover { transform: scale(1.3); z-index: 5; position: relative; }
+.hm-legend { display: flex; align-items: center; gap: 6px; margin-top: 10px; font-size: 10px; color: var(--muted); font-family: 'IBM Plex Mono', monospace; }
+.hm-swatch { width: 14px; height: 14px; border-radius: 2px; }
 
-/* ── BARS ── */
+/* BARS */
 .bar-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
 .bar-label { font-size: 12px; color: var(--text2); min-width: 48px; flex-shrink: 0; }
 .bar-track { flex: 1; background: rgba(255,255,255,0.05); border-radius: 99px; height: 8px; overflow: hidden; }
-.bar-fill { height: 100%; border-radius: 99px; transition: width 1s cubic-bezier(.4,0,.2,1); }
+.bar-fill { height: 100%; border-radius: 99px; width: 0%; transition: width 1s cubic-bezier(.4,0,.2,1); }
 .bar-val { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--muted); min-width: 40px; text-align: right; }
 
-/* ── INSIGHT BOX ── */
+/* INSIGHT */
 .insight { background: rgba(255,107,53,0.08); border-left: 2px solid var(--accent); border-radius: 0 8px 8px 0; padding: 10px 14px; font-size: 12px; color: var(--text2); margin-top: 1rem; line-height: 1.6; }
 .insight strong { color: var(--accent2); }
 
-/* ── REGION MAP PLACEHOLDER ── */
-.japan-map { position: relative; height: 300px; background: var(--surface2); border-radius: 8px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-.map-svg { width: 100%; height: 100%; opacity: 0.9; }
-.region-pin { position: absolute; display: flex; flex-direction: column; align-items: center; cursor: pointer; transition: transform 0.2s; }
-.region-pin:hover { transform: scale(1.15); }
-.pin-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 8px var(--accent); }
-.pin-label { font-size: 9px; color: var(--text); margin-top: 2px; white-space: nowrap; font-family: 'IBM Plex Mono', monospace; }
+/* TWO COL */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 
-/* ── TIMELINE ── */
-.timeline { position: relative; padding-left: 1.5rem; }
-.timeline::before { content:''; position:absolute; left:5px; top:4px; bottom:4px; width:1px; background: var(--border); }
-.tl-item { position: relative; margin-bottom: 12px; }
-.tl-item::before { content:''; position:absolute; left:-1.15rem; top:5px; width:8px; height:8px; border-radius:50%; background: var(--surface2); border:1px solid var(--accent); }
-.tl-time { font-size:10px; color:var(--muted); font-family:'IBM Plex Mono',monospace; }
-.tl-text { font-size:12px; color:var(--text2); }
-.tl-count { font-size:11px; color:var(--accent); font-family:'IBM Plex Mono',monospace; }
-
-/* ── AD GRID ── */
+/* ADS */
 .ad-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-.ad-card {
-  background: var(--surface);
-  border: 0.5px solid var(--border);
-  border-radius: 10px;
-  padding: 14px;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.2s;
-  position: relative;
-  overflow: hidden;
-}
-.ad-card:hover { border-color: rgba(255,107,53,0.4); background: var(--surface2); transform: translateY(-2px); }
-.ad-emoji { font-size: 30px; margin-bottom: 8px; display: block; }
+.ad-card { background: var(--surface2); border: 0.5px solid var(--border); border-radius: 10px; padding: 14px; text-align: center; cursor: pointer; transition: all 0.2s; position: relative; }
+.ad-card:hover { border-color: rgba(255,107,53,0.4); transform: translateY(-2px); }
+.ad-emoji { font-size: 28px; margin-bottom: 8px; display: block; }
 .ad-name { font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
 .ad-tag { display: inline-block; font-size: 9px; font-family: 'IBM Plex Mono', monospace; background: rgba(255,209,102,0.15); color: var(--accent2); border-radius: 99px; padding: 2px 8px; margin-bottom: 6px; }
 .ad-price { font-size: 13px; font-weight: 700; color: var(--accent); }
-.ad-shop { font-size: 10px; color: var(--muted); }
+.ad-shop { font-size: 10px; color: var(--muted); margin-top: 2px; }
+.ad-badge { position: absolute; top: 8px; right: 8px; background: rgba(255,107,53,0.2); color: var(--accent); font-size: 9px; font-family: 'IBM Plex Mono', monospace; padding: 2px 6px; border-radius: 99px; }
 
-/* ── API SETUP BOX ── */
-.api-setup {
-  background: var(--surface2);
-  border: 0.5px solid var(--border);
-  border-radius: 10px;
-  padding: 1.25rem;
-  margin-top: 1rem;
-}
-.api-setup-title { font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
-.api-setup-title .badge { background: rgba(255,209,102,0.15); color: var(--accent2); font-size: 9px; font-family: 'IBM Plex Mono', monospace; padding: 2px 8px; border-radius: 99px; }
-.api-input-row { display: flex; gap: 8px; margin-bottom: 8px; }
-.api-input {
-  flex: 1;
-  background: var(--bg);
-  border: 0.5px solid var(--border);
-  border-radius: 6px;
-  padding: 8px 12px;
-  color: var(--text2);
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 11px;
-  outline: none;
-}
-.api-input:focus { border-color: rgba(255,107,53,0.5); }
-.btn-connect {
-  background: var(--accent);
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  padding: 8px 16px;
-  font-size: 12px;
-  font-weight: 700;
-  cursor: pointer;
-  white-space: nowrap;
-  font-family: 'Noto Sans JP', sans-serif;
-}
-.btn-connect:hover { opacity: 0.85; }
-.step-list { list-style: none; counter-reset: steps; }
-.step-list li { counter-increment: steps; padding-left: 1.5rem; position: relative; font-size: 11px; color: var(--text2); margin-bottom: 4px; line-height: 1.6; }
-.step-list li::before { content: counter(steps); position: absolute; left: 0; width: 16px; height: 16px; background: rgba(255,107,53,0.2); color: var(--accent); border-radius: 50%; font-size: 9px; font-family: 'IBM Plex Mono', monospace; display: flex; align-items: center; justify-content: center; top: 2px; }
-.code-block { background: var(--bg); border: 0.5px solid var(--border); border-radius: 6px; padding: 8px 12px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--accent2); margin: 8px 0; white-space: pre-wrap; word-break: break-all; }
+/* ADSENSE PLACEHOLDER */
+.adsense-unit { background: var(--surface2); border: 1px dashed rgba(76,201,240,0.2); border-radius: 8px; height: 90px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; }
+.adsense-unit span { font-size: 10px; color: rgba(76,201,240,0.4); font-family: 'IBM Plex Mono', monospace; }
 
-/* ── TOOLTIP ── */
-#tooltip {
-  position: fixed;
-  background: rgba(10,10,15,0.95);
-  border: 0.5px solid var(--border);
-  border-radius: 6px;
-  padding: 6px 10px;
-  font-size: 11px;
-  font-family: 'IBM Plex Mono', monospace;
-  color: var(--text);
-  pointer-events: none;
-  z-index: 100;
-  display: none;
-  white-space: nowrap;
-}
+/* TOOLTIP */
+#tooltip { position: fixed; background: rgba(10,10,15,0.95); border: 0.5px solid var(--border); border-radius: 6px; padding: 6px 10px; font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--text); pointer-events: none; z-index: 100; display: none; white-space: nowrap; }
 
-/* ── RESPONSIVE ── */
+/* RESPONSIVE */
 @media (max-width: 640px) {
   .app { padding: 0 0.75rem 2rem; }
   .header { flex-wrap: wrap; gap: 8px; padding: 1.25rem 0 1rem; }
-  .header-left { flex: 1; }
-  .live-badge { font-size: 10px; padding: 3px 8px; }
   .logo { font-size: 18px; }
-
   .stats { grid-template-columns: repeat(2, 1fr); gap: 8px; }
   .stat-val { font-size: 20px; }
-
-  .tab-bar { flex-wrap: wrap; gap: 3px; }
-  .tab-btn { flex: 1 1 calc(33% - 6px); min-width: 0; font-size: 11px; padding: 7px 2px; }
+  .tab-btn { font-size: 11px; padding: 7px 2px; }
   .tab-btn svg { display: none; }
-
-  .two-col { grid-template-columns: 1fr !important; }
-  .two-col > [style*="grid-column: span 2"],
-  .two-col > [style*="grid-column:span 2"] { grid-column: span 1 !important; }
-
-  .heatmap-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-  .heatmap-table { min-width: 380px; font-size: 9px; }
-  .hcell { width: 20px; height: 16px; }
-
+  .two-col { grid-template-columns: 1fr; }
   .ad-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
-  .ad-emoji { font-size: 24px; }
-  .ad-name { font-size: 11px; }
-
   .card { padding: 0.875rem 1rem; }
-  .insight { font-size: 11px; }
-  .bar-label { font-size: 11px; min-width: 40px; }
-
-  /* 収益化3列→1列 */
-  .revenue-grid { grid-template-columns: 1fr !important; }
-
-  /* API設定 */
-  .api-input-row { flex-direction: column; }
-  .btn-connect { width: 100%; }
 }
 </style>
 </head>
@@ -299,45 +125,40 @@ body::before {
 <div id="tooltip"></div>
 <div class="app">
 
-  <!-- HEADER -->
   <header class="header">
-    <div class="header-left">
-      <div>
-        <div class="logo">🍺 二日酔い<span>DB</span></div>
-        <div class="tagline">X (Twitter) 「二日酔い」投稿リアルタイム分析</div>
-      </div>
+    <div>
+      <div class="logo">🍺 二日酔い<span>DB</span></div>
+      <div class="tagline">X (Twitter) 「二日酔い」投稿リアルタイム分析</div>
     </div>
     <div class="live-badge">
       <div class="live-dot"></div>
-      DEMO MODE — モックデータ
+      DEMO MODE
     </div>
   </header>
 
-  <!-- STATS -->
   <div class="stats">
     <div class="stat-card">
       <div class="stat-label">TODAY'S POSTS</div>
       <div class="stat-val" id="st-today">2,847</div>
-      <div class="stat-sub">今日の「二日酔い」投稿数</div>
+      <div class="stat-sub">今日の投稿数</div>
     </div>
     <div class="stat-card">
       <div class="stat-label">PEAK TIME</div>
-      <div class="stat-val" id="st-peak">08:24</div>
+      <div class="stat-val">08:24</div>
       <div class="stat-sub">本日のピーク時刻</div>
     </div>
     <div class="stat-card">
       <div class="stat-label">WEEK CHANGE</div>
-      <div class="stat-val" id="st-change">+34%</div>
+      <div class="stat-val">+34%</div>
       <div class="stat-sub">先週同曜日比</div>
     </div>
     <div class="stat-card">
       <div class="stat-label">TOP REGION</div>
-      <div class="stat-val" id="st-region">東京</div>
+      <div class="stat-val">東京</div>
       <div class="stat-sub">最多投稿地域</div>
     </div>
   </div>
 
-  <!-- TABS -->
   <div class="tab-bar">
     <button class="tab-btn active" onclick="switchTab(0)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
@@ -345,7 +166,7 @@ body::before {
     </button>
     <button class="tab-btn" onclick="switchTab(1)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-      曜日別
+      月別
     </button>
     <button class="tab-btn" onclick="switchTab(2)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
@@ -355,189 +176,72 @@ body::before {
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
       対策グッズ
     </button>
-    <button class="tab-btn" onclick="switchTab(4)">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-      API設定
-    </button>
   </div>
 
-  <!-- PANEL 0: TIME HEATMAP -->
+  <!-- 時間帯別 -->
   <div id="panel0" class="panel active">
-    <div class="two-col">
-      <div class="card" style="grid-column: span 2">
-        <div class="card-title"><span></span>時間帯 × 曜日 ヒートマップ</div>
-        <div class="heatmap-wrap">
-          <table class="heatmap-table" id="heatmap-table"></table>
-        </div>
-        <div class="hm-legend">
-          <span>少ない</span>
-          <div class="hm-legend-bar" id="hm-legend-bar"></div>
-          <span>多い</span>
-          <span style="margin-left:auto;font-size:9px">クリックで詳細</span>
-        </div>
+    <div class="card">
+      <div class="card-title"><span class="card-title-dot"></span>時間帯 × 曜日 ヒートマップ</div>
+      <div class="heatmap-wrap">
+        <table class="heatmap-table" id="hm-table"></table>
+      </div>
+      <div class="hm-legend">
+        <span>少ない</span>
+        <div style="display:flex;gap:2px" id="hm-legend"></div>
+        <span>多い</span>
+        <span style="margin-left:auto;font-size:9px">ホバーで詳細</span>
       </div>
     </div>
-    <div class="two-col">
-      <div class="card">
-        <div class="card-title"><span style="background:var(--accent2)"></span>今日のタイムライン</div>
-        <div class="timeline" id="tl-today"></div>
-      </div>
-      <div class="card">
-        <div class="card-title"><span style="background:var(--green)"></span>よく使われる言葉</div>
-        <div id="word-cloud"></div>
-        <div class="insight" style="margin-top:0.75rem">
-          <strong>ピーク分析：</strong>土曜日の朝8〜10時が最も多い。「頭痛い」「気持ち悪い」が頻出。
-        </div>
-      </div>
+    <div class="insight">
+      <strong>ピーク分析：</strong>土曜・日曜の朝8〜10時が最も投稿が多い時間帯。金曜深夜から土曜早朝にかけて急増する傾向があります。
     </div>
   </div>
 
-  <!-- PANEL 1: WEEKDAY -->
+  <!-- 月別 -->
   <div id="panel1" class="panel">
-    <div class="two-col">
-      <div class="card">
-        <div class="card-title"><span></span>曜日別 投稿数</div>
-        <div id="weekday-bars"></div>
-        <div class="insight">
-          <strong>土曜日が断トツ1位。</strong>金曜の忘年会・歓迎会シーズン（11〜12月）はさらに1.5〜2倍に増加する傾向。
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-title"><span style="background:var(--blue)"></span>月別トレンド</div>
-        <div id="monthly-bars"></div>
-        <div class="insight">
-          <strong>12月・1月・4月</strong>が飲み会シーズンとして突出。GW明けにも小ピークあり。
-        </div>
+    <div class="card">
+      <div class="card-title"><span class="card-title-dot" style="background:var(--blue)"></span>月別 投稿数トレンド</div>
+      <div id="monthly-bars"></div>
+      <div class="insight">
+        <strong>12月・1月・4月</strong>が飲み会シーズンとして突出。GW明けにも小ピークあり。夏場（7〜8月）は比較的少ない傾向。
       </div>
     </div>
   </div>
 
-  <!-- PANEL 2: REGION -->
+  <!-- 地域別 -->
   <div id="panel2" class="panel">
-    <div class="two-col">
-      <div class="card" style="grid-column:span 2">
-        <div class="card-title"><span style="background:var(--blue)"></span>都道府県別 投稿数 TOP 10</div>
-        <div id="region-bars"></div>
-        <div class="insight" style="margin-top:0.75rem">
-          <strong>東京・大阪・神奈川</strong>の3都市圏で全体の約50%を占める。人口比で見ると北海道・福岡が高め（お酒文化の影響）。地域データはXプロフィールの位置情報から推定。
-        </div>
+    <div class="card">
+      <div class="card-title"><span class="card-title-dot" style="background:var(--green)"></span>都道府県別 投稿数 TOP 10</div>
+      <div id="region-bars"></div>
+      <div class="insight">
+        <strong>東京・大阪・神奈川</strong>の3都市圏で全体の約50%を占める。人口比で見ると北海道・福岡が高め。地域データはXプロフィールの位置情報から推定。
       </div>
     </div>
   </div>
 
-  <!-- PANEL 3: ADS -->
+  <!-- 対策グッズ -->
   <div id="panel3" class="panel">
-    <div class="card" style="margin-bottom:12px;border-color:rgba(76,201,240,0.2)">
-      <div class="card-title"><span style="background:var(--blue)"></span>広告（Google AdSense）</div>
+    <div class="card" style="border-color:rgba(76,201,240,0.2);margin-bottom:12px">
+      <div class="card-title"><span class="card-title-dot" style="background:var(--blue)"></span>スポンサー広告</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-        <div style="background:var(--surface2);border:1px dashed rgba(76,201,240,0.25);border-radius:8px;height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px">
-          <div style="font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace">ADSENSE UNIT — 468×60</div>
-          <div style="font-size:10px;color:rgba(76,201,240,0.5)">← ここにAdSenseコードを貼る →</div>
-        </div>
-        <div style="background:var(--surface2);border:1px dashed rgba(76,201,240,0.25);border-radius:8px;height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px">
-          <div style="font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace">ADSENSE UNIT — 468×60</div>
-          <div style="font-size:10px;color:rgba(76,201,240,0.5)">← ここにAdSenseコードを貼る →</div>
-        </div>
+        <div class="adsense-unit"><span>AD</span></div>
+        <div class="adsense-unit"><span>AD</span></div>
       </div>
-      <div style="margin-top:8px;font-size:10px;color:var(--muted)">AdSense審査通過後、上のdivをAdSenseの<code style="color:var(--accent2)">&lt;ins&gt;</code>タグに差し替えるだけで有効化</div>
-    </div>
-    <div class="card" style="margin-bottom:12px">
-      <div class="card-title"><span style="background:var(--accent2)"></span>二日酔い対策グッズ（PR）</div>
-      <div class="ad-grid" id="ad-grid"></div>
     </div>
     <div class="card">
-      <div class="card-title"><span style="background:var(--muted)"></span>広告収益の仕組み</div>
-      <div class="revenue-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;font-size:12px;color:var(--text2)">
-        <div style="background:var(--surface2);border-radius:8px;padding:12px">
-          <div style="font-weight:700;color:var(--accent2);margin-bottom:6px;font-size:11px">Amazon Associates</div>
-          <ul style="list-style:none;color:var(--muted);font-size:11px;line-height:2">
-            <li>報酬率 3〜8%</li>
-            <li>商品リンク自動生成</li>
-            <li>クリックトラッキング</li>
-            <li style="color:var(--green)">✓ おすすめ</li>
-          </ul>
-        </div>
-        <div style="background:var(--surface2);border-radius:8px;padding:12px">
-          <div style="font-weight:700;color:var(--accent2);margin-bottom:6px;font-size:11px">楽天アフィリエイト</div>
-          <ul style="list-style:none;color:var(--muted);font-size:11px;line-height:2">
-            <li>報酬率 1〜3%</li>
-            <li>楽天市場に強い</li>
-            <li>報酬単価やや高め</li>
-            <li style="color:var(--green)">✓ 併用推奨</li>
-          </ul>
-        </div>
-        <div style="background:var(--surface2);border-radius:8px;padding:12px">
-          <div style="font-weight:700;color:var(--accent2);margin-bottom:6px;font-size:11px">Google AdSense</div>
-          <ul style="list-style:none;color:var(--muted);font-size:11px;line-height:2">
-            <li>PV単価 ¥0.3〜2</li>
-            <li>月3万PVで約¥3,000〜</li>
-            <li>審査あり（2〜4週間）</li>
-            <li style="color:var(--accent)">⚡ 自動収益</li>
-          </ul>
-        </div>
-      </div>
+      <div class="card-title"><span class="card-title-dot" style="background:var(--accent2)"></span>二日酔い対策グッズ</div>
+      <div class="ad-grid" id="ad-grid"></div>
     </div>
   </div>
 
-  <!-- PANEL 4: API SETUP -->
-  <div id="panel4" class="panel">
-    <div class="two-col">
-      <div class="card">
-        <div class="api-setup-title" style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:12px">
-          X (Twitter) API 設定
-          <span class="badge">有料プラン必要</span>
-        </div>
-        <div class="api-input-row">
-          <input type="password" class="api-input" placeholder="Bearer Token">
-        </div>
-        <button class="btn-connect" style="width:100%;margin-bottom:12px" onclick="connectX()">接続テスト</button>
-        <ul class="step-list">
-          <li>developer.twitter.com でアプリ作成</li>
-          <li>Basic プラン ($100/月) 以上が必要</li>
-          <li>Bearer Token をコピーして上に貼付</li>
-          <li>検索エンドポイントを有効化</li>
-        </ul>
-        <div class="code-block">GET /2/tweets/search/recent
-?query=二日酔い lang:ja
-&max_results=100
-&tweet.fields=created_at,geo</div>
-      </div>
-      <div class="card">
-        <div class="api-setup-title" style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:12px">
-          データ保存設定
-          <span class="badge" style="background:rgba(6,214,160,0.15);color:var(--green)">無料枠あり</span>
-        </div>
-        <ul class="step-list" style="margin-bottom:12px">
-          <li>Supabase でプロジェクト作成（無料）</li>
-          <li>posts テーブルを作成（時刻・地域・カウント）</li>
-          <li>15分ごとにCronでX APIから集計</li>
-          <li>フロントはこのHTMLのAPIを差し替えるだけ</li>
-        </ul>
-        <div class="code-block">-- Supabase テーブル設計
-CREATE TABLE hangover_posts (
-  id BIGSERIAL PRIMARY KEY,
-  hour INT,
-  day_of_week INT,
-  region TEXT,
-  count INT,
-  fetched_at TIMESTAMPTZ
-);</div>
-        <div class="insight" style="margin-top:0.75rem">
-          <strong>費用目安：</strong>X API Basic $100/月 + Supabase 無料枠 + Vercelデプロイ 無料 = <strong>月100ドル〜</strong>
-        </div>
-      </div>
-    </div>
-  </div>
-
-</div><!-- /app -->
+</div>
 
 <script>
-// ── DATA ──
 const DAYS = ['月','火','水','木','金','土','日'];
 const HOURS = Array.from({length:24},(_,i)=>i);
-const HM_COLORS = ['#1a1a26','#3d2b0a','#633806','#854F0B','#BA7517','#EF9F27','#FAC775','#FFE5A0'];
+const HM_COLORS = ['#083d6b','#0a6ebd','#2196a8','#4caf70','#f4c72f','#f47c20','#e83030'];
 
-function intensity(d, h) {
+function hmIntensity(d, h) {
   const base = [0.05,0.04,0.03,0.03,0.04,0.08,0.22,0.52,0.68,0.55,0.38,0.25,0.18,0.13,0.12,0.12,0.15,0.22,0.32,0.42,0.52,0.62,0.72,0.45];
   const dm   = [0.45,0.45,0.5,0.6,0.85,1.0,0.95];
   const boost = (d >= 4) && (h >= 6 && h <= 10) ? 1.8 : 1.0;
@@ -549,99 +253,47 @@ function hmColor(v) {
   return HM_COLORS[i];
 }
 
-// ── HEATMAP ──
 function buildHeatmap() {
-  const table = document.getElementById('heatmap-table');
-  const head = table.createTHead();
-  const hr = head.insertRow();
-  const thBlank = document.createElement('th'); hr.appendChild(thBlank);
-  DAYS.forEach(d => {
-    const th = document.createElement('th'); th.textContent = d; hr.appendChild(th);
-  });
+  const table = document.getElementById('hm-table');
+  const thead = table.createTHead();
+  const hr = thead.insertRow();
+  const th0 = document.createElement('th'); hr.appendChild(th0);
+  DAYS.forEach(d => { const th = document.createElement('th'); th.textContent = d; hr.appendChild(th); });
   const tbody = table.createTBody();
   const tt = document.getElementById('tooltip');
   HOURS.forEach(h => {
     const tr = tbody.insertRow();
-    const td0 = tr.insertCell(); td0.className = 'hour-label'; td0.textContent = String(h).padStart(2,'0') + 'h';
-    DAYS.forEach((d, di) => {
-      const v = intensity(di, h);
+    const td0 = tr.insertCell(); td0.className = 'hm-hour'; td0.textContent = String(h).padStart(2,'0')+'h';
+    DAYS.forEach((d,di) => {
+      const v = hmIntensity(di, h);
       const cnt = Math.round(v * 600);
-      const td = tr.insertCell();
-      td.className = 'hcell';
-      td.style.background = hmColor(v);
-      td.addEventListener('mouseenter', e => {
-        tt.textContent = d + '曜 ' + String(h).padStart(2,'0') + ':00 — ' + cnt.toLocaleString() + '件';
-        tt.style.display = 'block';
-      });
-      td.addEventListener('mousemove', e => {
-        tt.style.left = (e.clientX + 12) + 'px';
-        tt.style.top  = (e.clientY - 28) + 'px';
-      });
-      td.addEventListener('mouseleave', () => { tt.style.display = 'none'; });
+      const td = tr.insertCell(); td.className = 'hcell'; td.style.background = hmColor(v);
+      td.addEventListener('mouseenter', e => { tt.textContent = d+'曜 '+String(h).padStart(2,'0')+':00 — '+cnt.toLocaleString()+'件'; tt.style.display='block'; });
+      td.addEventListener('mousemove', e => { tt.style.left=(e.clientX+12)+'px'; tt.style.top=(e.clientY-28)+'px'; });
+      td.addEventListener('mouseleave', () => { tt.style.display='none'; });
     });
   });
-  const lb = document.getElementById('hm-legend-bar');
-  HM_COLORS.forEach(c => {
-    const s = document.createElement('div'); s.className = 'hm-legend-swatch'; s.style.background = c; lb.appendChild(s);
-  });
+  const lb = document.getElementById('hm-legend');
+  HM_COLORS.forEach(c => { const s = document.createElement('div'); s.className='hm-swatch'; s.style.background=c; lb.appendChild(s); });
 }
 
-// ── BAR CHART ──
-function buildBars(containerId, data, maxV, colors) {
-  const wrap = document.getElementById(containerId);
+function buildBars(id, data, maxV, colors) {
+  const wrap = document.getElementById(id);
   if (!wrap) return;
   data.forEach(([label, val], i) => {
     const row = document.createElement('div'); row.className = 'bar-row';
     const lbl = document.createElement('div'); lbl.className = 'bar-label'; lbl.textContent = label;
     const track = document.createElement('div'); track.className = 'bar-track';
     const fill = document.createElement('div'); fill.className = 'bar-fill';
-    fill.style.width = '0%';
-    fill.style.background = colors ? colors[i % colors.length] : 'var(--amber)';
+    fill.style.background = colors ? colors[i] : 'var(--accent)';
     track.appendChild(fill);
-    const v = document.createElement('div'); v.className = 'bar-val'; v.textContent = val.toLocaleString();
-    row.appendChild(lbl); row.appendChild(track); row.appendChild(v);
+    const vl = document.createElement('div'); vl.className = 'bar-val'; vl.textContent = val.toLocaleString();
+    row.appendChild(lbl); row.appendChild(track); row.appendChild(vl);
     wrap.appendChild(row);
-    setTimeout(() => { fill.style.width = Math.round(val/maxV*100) + '%'; }, 100 + i*60);
+    setTimeout(() => { fill.style.width = Math.round(val/maxV*100)+'%'; }, 80 + i*50);
   });
 }
 
-// ── TIMELINE ──
-function buildTimeline() {
-  const events = [
-    ['01:30','夜中の投稿急増（飲み帰り）','↑ 320件'],
-    ['08:10','朝のピーク（目覚め後）','↑ 612件'],
-    ['10:30','2回目の波（遅起き組）','↑ 380件'],
-    ['13:00','昼過ぎに落ち着き','→ 140件'],
-    ['18:00','夕方に軽い回復ツイート','↑ 92件'],
-  ];
-  const wrap = document.getElementById('tl-today');
-  events.forEach(([t, desc, cnt]) => {
-    const item = document.createElement('div'); item.className = 'tl-item';
-    item.innerHTML = '<div class="tl-time">' + t + '</div><div class="tl-text">' + desc + '</div><div class="tl-count">' + cnt + '</div>';
-    wrap.appendChild(item);
-  });
-}
-
-// ── WORD CLOUD (simple) ──
-function buildWords() {
-  const words = [
-    ['頭痛い', 34], ['気持ち悪い', 28], ['最悪', 22], ['お酒やめる', 18],
-    ['水飲んだ', 15], ['ウコン', 13], ['二度と飲まない', 12], ['二日酔いつらい', 10],
-    ['吐いた', 8], ['ヘパリーゼ', 7],
-  ];
-  const wrap = document.getElementById('word-cloud');
-  words.forEach(([w, v]) => {
-    const span = document.createElement('span');
-    span.textContent = w;
-    const sz = 10 + Math.round(v/34*10);
-    span.style.cssText = 'display:inline-block;margin:3px 4px;font-size:' + sz + 'px;color:' + (v > 20 ? 'var(--accent)' : v > 12 ? 'var(--accent2)' : 'var(--muted)') + ';cursor:default;transition:transform 0.2s;';
-    span.addEventListener('mouseenter', () => span.style.transform = 'scale(1.2)');
-    span.addEventListener('mouseleave', () => span.style.transform = '');
-    wrap.appendChild(span);
-  });
-}
-
-// ── ADS ──
 function buildAds() {
   const items = [
     {e:'💊', name:'ヘパリーゼ W', tag:'定番', price:'¥1,480〜', shop:'Amazon', badge:'人気'},
@@ -657,36 +309,23 @@ function buildAds() {
   const wrap = document.getElementById('ad-grid');
   items.forEach(it => {
     const c = document.createElement('div'); c.className = 'ad-card';
-    const badgeHTML = it.badge ? '<div style="position:absolute;top:8px;right:8px;background:rgba(255,107,53,0.2);color:var(--accent);font-size:9px;font-family:\'IBM Plex Mono\',monospace;padding:2px 6px;border-radius:99px">' + it.badge + '</div>' : '';
-    c.innerHTML = badgeHTML + '<span class="ad-emoji">' + it.e + '</span><div class="ad-name">' + it.name + '</div><span class="ad-tag">' + it.tag + '</span><div class="ad-price">' + it.price + '</div><div class="ad-shop">' + it.shop + ' <span style="color:var(--accent);font-size:9px">→ 詳細</span></div>';
+    if (it.badge) { const b = document.createElement('div'); b.className='ad-badge'; b.textContent=it.badge; c.appendChild(b); }
+    c.innerHTML += '<span class="ad-emoji">'+it.e+'</span><div class="ad-name">'+it.name+'</div><span class="ad-tag">'+it.tag+'</span><div class="ad-price">'+it.price+'</div><div class="ad-shop">'+it.shop+' <span style="color:var(--accent);font-size:9px">→ 詳細</span></div>';
     wrap.appendChild(c);
   });
 }
 
-// ── CONNECT HANDLERS ──
-function connectX() {
-  alert('X API設定を保存しました。実際の接続にはバックエンドサーバー（Node.js/Python等）が必要です。');
-}
-
-// ── TAB SWITCH ──
 function switchTab(n) {
   document.querySelectorAll('.tab-btn').forEach((b,i) => b.classList.toggle('active', i===n));
   document.querySelectorAll('.panel').forEach((p,i) => p.classList.toggle('active', i===n));
 }
 
-// ── INIT ──
+// Init
 buildHeatmap();
-buildTimeline();
-buildWords();
-buildBars('weekday-bars',
-  [['月曜',380],['火曜',290],['水曜',310],['木曜',430],['金曜',680],['土曜',1240],['日曜',920]],
-  1240,
-  ['#888899','#888899','#888899','#888899','#f4a261','#ff6b35','#ffd166']
-);
 buildBars('monthly-bars',
   [['1月',1800],['2月',1100],['3月',1300],['4月',1600],['5月',1400],['6月',900],['7月',800],['8月',950],['9月',850],['10月',1050],['11月',1550],['12月',2100]],
   2100,
-  Array(12).fill(null).map((_,i) => [0,11,10].includes(i) ? '#ff6b35' : [3].includes(i) ? '#ffd166' : '#4cc9f0')
+  ['#ff6b35','#4cc9f0','#4cc9f0','#ffd166','#4cc9f0','#4cc9f0','#4cc9f0','#4cc9f0','#4cc9f0','#4cc9f0','#f4a261','#ff6b35']
 );
 buildBars('region-bars',
   [['東京',892],['大阪',654],['神奈川',487],['愛知',321],['福岡',298],['北海道',241],['埼玉',198],['千葉',187],['兵庫',165],['京都',143]],
@@ -695,7 +334,7 @@ buildBars('region-bars',
 );
 buildAds();
 
-// live counter simulation
+// Live counter
 setInterval(() => {
   const el = document.getElementById('st-today');
   if (el) el.textContent = (parseInt(el.textContent.replace(/,/g,'')) + Math.floor(Math.random()*3)).toLocaleString();
